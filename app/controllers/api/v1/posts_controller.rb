@@ -5,6 +5,11 @@ class Api::V1::PostsController < ApplicationController
     render json: posts, status: 200
   end
 
+  def show
+    post = Post.find(params[:id])
+    render json: post
+  end
+
   def create
     post = current_user.posts.build(post_params)
     if post.save

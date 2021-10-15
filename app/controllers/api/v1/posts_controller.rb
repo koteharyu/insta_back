@@ -2,12 +2,12 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     posts = Post.order(created_at: :desc)
-    render json: posts, status: 200
+    render json: posts, status: 200, methods: [:image_url]
   end
 
   def show
     post = Post.find(params[:id])
-    render json: post
+    render json: post, methods: [:image_url]
   end
 
   def create

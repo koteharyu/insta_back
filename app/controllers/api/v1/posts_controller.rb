@@ -2,7 +2,7 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     posts = Post.order(created_at: :desc)
-    render json: posts, status: 200, methods: [:image_url]
+    render json: posts, methods: [:image_url]
   end
 
   def show
@@ -11,16 +11,18 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def create
-    post = current_user.posts.build(post_params)
+    # post = current_user.posts.build(post_params)
+    post = Post.new(post_params)
     if post.save
-      render json: post, status: 200
+      render json: post, methods: [:image_url]
     else
       render json: post.errors, status: 400
     end
   end
 
   def update
-    post = current_user.posts.find(params[:id])
+    # post = current_user.posts.find(params[:id])
+    post = Post.find(params[:id])
     if post.update(post_params)
       render json: post
     else
@@ -29,7 +31,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def destroy
-    post = current_user.posts.find(params[:id])
+    # post = current_user.posts.find(params[:id])
+    post = Post.find(params[:id])
     post.destroy!
     render json: post
   end
@@ -37,6 +40,6 @@ class Api::V1::PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :body, :image)
+    params.require(:post).permit(:title, :body, :image, :user_id)
   end
 end
